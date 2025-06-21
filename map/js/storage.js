@@ -27,7 +27,7 @@ const Storage = {
             const dataWithTimestamp = {
                 ...data,
                 timestamp: Date.now(),
-                version: '1.0'
+                version: '1.1'
             };
             
             // 保存到localStorage
@@ -117,15 +117,15 @@ const Storage = {
             }
         }
         
-        // 目标值验证
-        const validGoals = ['减脂', '保持健康', '增肌', '脑力提升'];
+        // 目标值验证 - v1.1版本
+        const validGoals = ['减脂塑形', '均衡营养', '增肌增重'];
         if (!validGoals.includes(data.goal)) {
             console.error('Storage.validate: 无效的目标值', data.goal);
             return false;
         }
         
-        // 身高验证 (100-250cm)
-        if (typeof data.height !== 'number' || data.height < 100 || data.height > 250) {
+        // 身高验证 (140-250cm)
+        if (typeof data.height !== 'number' || data.height < 140 || data.height > 250) {
             console.error('Storage.validate: 无效的身高值', data.height);
             return false;
         }

@@ -176,12 +176,21 @@ const App = {
     },
     
     /**
-     * 验证设置数据
+     * 验证设置数据 - v1.1版本
      */
     validateSetupData: function(data) {
         if (!data.goal) return false;
-        if (!data.height || data.height < 100 || data.height > 250) return false;
+        
+        // 验证目标值
+        const validGoals = ['减脂塑形', '均衡营养', '增肌增重'];
+        if (!validGoals.includes(data.goal)) return false;
+        
+        // 验证身高范围 (140-250cm)
+        if (!data.height || data.height < 140 || data.height > 250) return false;
+        
+        // 验证体重范围 (30-200kg)
         if (!data.weight || data.weight < 30 || data.weight > 200) return false;
+        
         return true;
     },
     
@@ -255,7 +264,7 @@ const App = {
     },
     
     /**
-     * 刷新仪表板数据
+     * 刷新仪表板数据 - v1.1版本
      */
     refreshDashboard: function() {
         if (!this.currentUserData) {
@@ -268,43 +277,90 @@ const App = {
             return;
         }
         
-        // 计算份量
-        const portions = Calculator.calculate(
+        // 计算膳食规划
+        const mealPlanResult = Calculator.calculate(
             this.currentUserData.goal,
             this.currentUserData.height,
             this.currentUserData.weight
         );
         
         // 更新页面显示
-        this.updatePortionDisplay(portions);
+        this.updateMealPlanDisplay(mealPlanResult.mealPlan);
         
         console.log('App.refreshDashboard: 仪表板数据刷新完成');
     },
     
     /**
-     * 更新份量显示
+     * 更新分餐显示 - v1.1版本
+     * 将计算结果渲染到三餐卡片
+     * @param {Object} mealPlan - 分餐规划数据
      */
-    updatePortionDisplay: function(portions) {
-        // 更新各项份量数值
-        const updates = [
-            { id: 'protein-amount', value: portions.protein },
-            { id: 'carb-amount', value: portions.carb },
-            { id: 'vegetable-amount', value: portions.vegetable },
-            { id: 'fat-amount', value: portions.fat }
-        ];
+    updateMealPlanDisplay: function(mealPlan) {
+        try {
+            console.log('App.updateMealPlanDisplay: 更新分餐显示', mealPlan);
+            
+            // 更新早餐
+            const breakfast = mealPlan.breakfast || {};
+            this.updateMealElements('breakfast', breakfast);
+            
+            // 更新午餐
+            const lunch = mealPlan.lunch || {};
+            this.updateMealElements('lunch', lunch);
+            
+            // 更新晚餐
+            const dinner = mealPlan.dinner || {};
+            this.updateMealElements('dinner', dinner);
+            
+            console.log('App.updateMealPlanDisplay: 分餐显示更新完成');
+            
+        } catch (error) {
+            console.error('App.updateMealPlanDisplay: 更新显示失败', error);
+        }
+    },
+
+    /**
+     * 更新单餐元素
+     * @param {string} mealName - 餐名 (breakfast/lunch/dinner)
+     * @param {Object} mealData - 餐食数据
+     */
+    updateMealElements: function(mealName, mealData) {
+        // 蛋白质
+        const proteinElement = document.getElementById(`${mealName}-protein`);
+        if (proteinElement && mealData.protein !== undefined) {
+            this.animateElementUpdate(proteinElement, mealData.protein);
+        }
         
-        updates.forEach(update => {
-            const element = document.getElementById(update.id);
-            if (element) {
-                // 添加更新动画
-                element.style.transform = 'scale(1.1)';
-                element.textContent = update.value;
-                
-                setTimeout(() => {
-                    element.style.transform = 'scale(1)';
-                }, 200);
-            }
-        });
+        // 碳水化合物
+        const carbElement = document.getElementById(`${mealName}-carb`);
+        if (carbElement && mealData.carb !== undefined) {
+            this.animateElementUpdate(carbElement, mealData.carb);
+        }
+        
+        // 蔬菜
+        const vegetableElement = document.getElementById(`${mealName}-vegetable`);
+        if (vegetableElement && mealData.vegetable !== undefined) {
+            this.animateElementUpdate(vegetableElement, mealData.vegetable);
+        }
+        
+        // 脂肪
+        const fatElement = document.getElementById(`${mealName}-fat`);
+        if (fatElement && mealData.fat !== undefined) {
+            this.animateElementUpdate(fatElement, mealData.fat);
+        }
+    },
+
+    /**
+     * 带动画更新元素
+     * @param {Element} element - 要更新的元素
+     * @param {number} value - 新值
+     */
+    animateElementUpdate: function(element, value) {
+        element.style.transform = 'scale(1.1)';
+        element.textContent = value;
+        
+        setTimeout(() => {
+            element.style.transform = 'scale(1)';
+        }, 200);
     },
     
     /**

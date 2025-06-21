@@ -1,159 +1,217 @@
 /**
- * 份量计算模块 - 根据用户目标和体型计算每日份量
- * 核心算法实现PRD中定义的规则表
+ * 膳食计算模块 - v1.1
+ * 实现基于身高体重的个性化计算和分餐规划
+ * 
+ * 算法逻辑：
+ * 1. 计算基础热量值：BaseValue = (10 * 体重) + (6.25 * 身高) - 150
+ * 2. 根据目标计算总热量：应用目标系数
+ * 3. 换算为营养素份数：按40%蛋白质、40%碳水、20%脂肪分配
+ * 4. 分餐规划：按3:4:3比例分配到早中晚三餐
  */
 
 const Calculator = {
     /**
-     * 基础规则表 - 根据目标确定基础份量
-     * 数据来源：PRD中定义的核心算法规则表
+     * 目标系数配置 - 根据PRD v1.1定义
      */
-    rules: {
-        '减脂': {
-            protein: 4,      // 蛋白质(掌)
-            carb: 2,         // 碳水化合物(拳)
-            vegetable: 5,    // 蔬菜(捧)
-            fat: 2           // 脂肪(拇指)
-        },
-        '保持健康': {
-            protein: 3,
-            carb: 3,
-            vegetable: 5,
-            fat: 3
-        },
-        '增肌': {
-            protein: 5,
-            carb: 4,
-            vegetable: 4,
-            fat: 3
-        },
-        '脑力提升': {
-            protein: 3,
-            carb: 3,
-            vegetable: 4,
-            fat: 4
-        }
+    goalMultipliers: {
+        '减脂塑形': 1.1,
+        '均衡营养': 1.3,
+        '增肌增重': 1.5
+    },
+
+    /**
+     * 营养素热量配置（每份热量）
+     */
+    nutrientCalories: {
+        protein: 150,    // 蛋白质每份150卡
+        carb: 150,       // 碳水每份150卡
+        fat: 100         // 脂肪每份100卡
+    },
+
+    /**
+     * 营养素分配比例
+     */
+    nutrientRatios: {
+        protein: 0.4,    // 蛋白质40%
+        carb: 0.4,       // 碳水40%
+        fat: 0.2         // 脂肪20%
+    },
+
+    /**
+     * 三餐分配比例 (早:中:晚 = 3:4:3)
+     */
+    mealRatios: {
+        breakfast: 0.3,  // 早餐30%
+        lunch: 0.4,      // 午餐40%
+        dinner: 0.3      // 晚餐30%
     },
     
     /**
-     * 计算用户的每日份量建议
+     * 主计算方法 - v1.1版本
+     * 根据用户输入计算完整的膳食规划
      * @param {string} goal - 用户目标
      * @param {number} height - 身高(cm)
      * @param {number} weight - 体重(kg)
-     * @returns {Object} 份量建议对象
+     * @returns {Object} 完整的膳食规划
      */
     calculate: function(goal, height, weight) {
         try {
+            console.log('开始计算膳食规划:', { goal, height, weight });
+
             // 参数验证
             if (!this.validateInputs(goal, height, weight)) {
                 throw new Error('计算参数无效');
             }
-            
-            // 获取基础份量
-            const basePortions = this.rules[goal];
-            if (!basePortions) {
-                throw new Error(`未找到目标"${goal}"对应的规则`);
-            }
-            
-            // 根据体型调整份量
-            const adjustedPortions = this.adjustForBodySize(basePortions, height, weight);
-            
-            // 添加计算元数据
+
+            // 第一步：计算基础热量值
+            const baseValue = this.calculateBaseValue(height, weight);
+
+            // 第二步：计算总热量
+            const totalCalories = this.calculateTotalCalories(baseValue, goal);
+
+            // 第三步：换算为营养素份数
+            const dailyPortions = this.calculateNutrientPortions(totalCalories);
+
+            // 第四步：分配到三餐
+            const mealPlan = this.distributeMealPortions(dailyPortions);
+
+            // 返回完整结果
             const result = {
-                ...adjustedPortions,
-                goal: goal,
-                height: height,
-                weight: weight,
-                bmi: this.calculateBMI(height, weight),
-                bodyType: this.getBodyType(height, weight),
+                baseValue,
+                totalCalories,
+                dailyPortions,
+                mealPlan,
+                userData: { goal, height, weight },
                 calculatedAt: new Date().toISOString()
             };
-            
-            console.log('Calculator.calculate: 计算完成', result);
+
+            console.log('膳食规划计算完成:', result);
             return result;
             
         } catch (error) {
             console.error('Calculator.calculate: 计算失败', error);
             // 返回默认的安全值
-            return this.getDefaultPortions(goal);
+            return this.getDefaultMealPlan(goal);
         }
     },
     
     /**
-     * 根据体型调整基础份量
-     * 基于BMI和体重进行微调，保持MVP简单原则
-     * @param {Object} basePortions - 基础份量
-     * @param {number} height - 身高(cm)
-     * @param {number} weight - 体重(kg)
-     * @returns {Object} 调整后的份量
+     * 计算基础热量值
+     * 基于简化的热量计算公式
+     * @param {number} height - 身高（厘米）
+     * @param {number} weight - 体重（公斤）
+     * @returns {number} 基础热量值
      */
-    adjustForBodySize: function(basePortions, height, weight) {
-        const bmi = this.calculateBMI(height, weight);
-        let adjustmentFactor = 1.0;
+    calculateBaseValue: function(height, weight) {
+        // PRD v1.1 公式：BaseValue = (10 * 体重) + (6.25 * 身高) - 150
+        const baseValue = (10 * weight) + (6.25 * height) - 150;
         
-        // 根据BMI进行微调
-        if (bmi < 18.5) {
-            // 偏瘦：稍微增加份量
-            adjustmentFactor = 1.1;
-        } else if (bmi > 28) {
-            // 偏胖：稍微减少份量
-            adjustmentFactor = 0.9;
-        } else if (weight > 80) {
-            // 体重较大：稍微增加份量
-            adjustmentFactor = 1.1;
+        console.log(`基础热量计算: (10 * ${weight}) + (6.25 * ${height}) - 150 = ${baseValue}`);
+        
+        return Math.max(baseValue, 800); // 设置最小值防止异常
+    },
+
+    /**
+     * 根据目标计算总热量
+     * @param {number} baseValue - 基础热量值
+     * @param {string} goal - 目标类型
+     * @returns {number} 总热量
+     */
+    calculateTotalCalories: function(baseValue, goal) {
+        const multiplier = this.goalMultipliers[goal];
+        if (!multiplier) {
+            throw new Error(`不支持的目标类型: ${goal}`);
         }
+
+        const totalCalories = baseValue * multiplier;
         
-        // 应用调整系数并四舍五入
-        const adjusted = {
-            protein: Math.round(basePortions.protein * adjustmentFactor),
-            carb: Math.round(basePortions.carb * adjustmentFactor),
-            vegetable: Math.round(basePortions.vegetable * adjustmentFactor),
-            fat: Math.round(basePortions.fat * adjustmentFactor)
+        console.log(`总热量计算: ${baseValue} * ${multiplier} = ${totalCalories}`);
+        
+        return totalCalories;
+    },
+
+    /**
+     * 将热量换算为营养素份数
+     * @param {number} totalCalories - 总热量
+     * @returns {Object} 营养素份数对象
+     */
+    calculateNutrientPortions: function(totalCalories) {
+        const portions = {};
+
+        // 计算各营养素份数
+        portions.protein = (totalCalories * this.nutrientRatios.protein) / this.nutrientCalories.protein;
+        portions.carb = (totalCalories * this.nutrientRatios.carb) / this.nutrientCalories.carb;
+        portions.fat = (totalCalories * this.nutrientRatios.fat) / this.nutrientCalories.fat;
+
+        console.log('营养素份数计算（四舍五入前）:', portions);
+
+        // 四舍五入到最接近的0.5
+        portions.protein = this.roundToHalf(portions.protein);
+        portions.carb = this.roundToHalf(portions.carb);
+        portions.fat = this.roundToHalf(portions.fat);
+
+        console.log('营养素份数计算（四舍五入后）:', portions);
+
+        return portions;
+    },
+
+    /**
+     * 四舍五入到最接近的0.5
+     * 例如：2.3 -> 2.5, 2.1 -> 2.0, 2.7 -> 2.5
+     * @param {number} value - 要处理的数值
+     * @returns {number} 四舍五入后的数值
+     */
+    roundToHalf: function(value) {
+        return Math.round(value * 2) / 2;
+    },
+
+    /**
+     * 按比例分配营养素到三餐
+     * @param {Object} dailyPortions - 每日总份数
+     * @returns {Object} 三餐分配结果
+     */
+    distributeMealPortions: function(dailyPortions) {
+        const mealPlan = {
+            breakfast: {},
+            lunch: {},
+            dinner: {}
         };
-        
-        // 确保最小值
-        adjusted.protein = Math.max(1, adjusted.protein);
-        adjusted.carb = Math.max(1, adjusted.carb);
-        adjusted.vegetable = Math.max(2, adjusted.vegetable);
-        adjusted.fat = Math.max(1, adjusted.fat);
-        
-        // 确保最大值（安全上限）
-        adjusted.protein = Math.min(8, adjusted.protein);
-        adjusted.carb = Math.min(6, adjusted.carb);
-        adjusted.vegetable = Math.min(8, adjusted.vegetable);
-        adjusted.fat = Math.min(6, adjusted.fat);
-        
-        return adjusted;
+
+        // 分配蛋白质和脂肪到三餐
+        ['protein', 'fat'].forEach(nutrient => {
+            const total = dailyPortions[nutrient];
+            
+            mealPlan.breakfast[nutrient] = this.roundToHalf(total * this.mealRatios.breakfast);
+            mealPlan.lunch[nutrient] = this.roundToHalf(total * this.mealRatios.lunch);
+            mealPlan.dinner[nutrient] = this.roundToHalf(total * this.mealRatios.dinner);
+        });
+
+        // 碳水只分配到早餐和午餐（按PRD v1.1线框图）
+        const totalCarb = dailyPortions.carb;
+        mealPlan.breakfast.carb = this.roundToHalf(totalCarb * 0.375); // 早餐占37.5%
+        mealPlan.lunch.carb = this.roundToHalf(totalCarb * 0.625);     // 午餐占62.5%
+        mealPlan.dinner.carb = 0; // 晚餐不显示碳水
+
+        // 蔬菜固定配置（不参与热量计算）
+        mealPlan.breakfast.vegetable = 0;  // 早餐不显示蔬菜
+        mealPlan.lunch.vegetable = 2;      // 午餐固定2份
+        mealPlan.dinner.vegetable = 2;     // 晚餐固定2份
+
+        console.log('三餐分配结果:', mealPlan);
+
+        return mealPlan;
     },
     
     /**
-     * 计算BMI指数
-     * @param {number} height - 身高(cm)
-     * @param {number} weight - 体重(kg)
-     * @returns {number} BMI值
+     * 获取支持的目标列表
+     * @returns {Array} 目标列表
      */
-    calculateBMI: function(height, weight) {
-        const heightInMeters = height / 100;
-        return weight / (heightInMeters * heightInMeters);
+    getSupportedGoals: function() {
+        return Object.keys(this.goalMultipliers);
     },
     
     /**
-     * 获取体型分类
-     * @param {number} height - 身高(cm)
-     * @param {number} weight - 体重(kg)
-     * @returns {string} 体型分类
-     */
-    getBodyType: function(height, weight) {
-        const bmi = this.calculateBMI(height, weight);
-        
-        if (bmi < 18.5) return '偏瘦';
-        if (bmi < 24) return '正常';
-        if (bmi < 28) return '偏胖';
-        return '肥胖';
-    },
-    
-    /**
-     * 验证输入参数
+     * 验证输入参数 - v1.1版本
      * @param {string} goal - 目标
      * @param {number} height - 身高
      * @param {number} weight - 体重
@@ -161,18 +219,18 @@ const Calculator = {
      */
     validateInputs: function(goal, height, weight) {
         // 检查目标是否有效
-        if (!this.rules.hasOwnProperty(goal)) {
+        if (!this.goalMultipliers.hasOwnProperty(goal)) {
             console.error('Calculator.validateInputs: 无效的目标', goal);
             return false;
         }
         
-        // 检查身高范围
-        if (typeof height !== 'number' || height < 100 || height > 250) {
+        // 检查身高范围 (140-250cm合理范围)
+        if (typeof height !== 'number' || height < 140 || height > 250) {
             console.error('Calculator.validateInputs: 无效的身高', height);
             return false;
         }
         
-        // 检查体重范围
+        // 检查体重范围 (30-200kg合理范围)
         if (typeof weight !== 'number' || weight < 30 || weight > 200) {
             console.error('Calculator.validateInputs: 无效的体重', weight);
             return false;
@@ -182,23 +240,41 @@ const Calculator = {
     },
     
     /**
-     * 获取默认份量（出错时的安全回退）
+     * 获取默认膳食规划（出错时的安全回退）
      * @param {string} goal - 目标
-     * @returns {Object} 默认份量
+     * @returns {Object} 默认膳食规划
      */
-    getDefaultPortions: function(goal) {
-        const defaultRules = this.rules[goal] || this.rules['保持健康'];
+    getDefaultMealPlan: function(goal) {
+        // 使用默认值计算
+        const defaultGoal = goal || '均衡营养';
+        const defaultHeight = 170;
+        const defaultWeight = 65;
         
-        return {
-            ...defaultRules,
-            goal: goal || '保持健康',
-            height: 170,
-            weight: 65,
-            bmi: 22.5,
-            bodyType: '正常',
-            calculatedAt: new Date().toISOString(),
-            isDefault: true
-        };
+        try {
+            // 尝试用默认值重新计算
+            return this.calculate(defaultGoal, defaultHeight, defaultWeight);
+        } catch (error) {
+            console.error('获取默认膳食规划失败，返回硬编码安全值:', error);
+            
+            // 硬编码的安全回退值
+            return {
+                baseValue: 1500,
+                totalCalories: 1950,
+                dailyPortions: {
+                    protein: 5,
+                    carb: 5,
+                    fat: 4
+                },
+                mealPlan: {
+                    breakfast: { protein: 1.5, carb: 2, vegetable: 0, fat: 1 },
+                    lunch: { protein: 2, carb: 3, vegetable: 2, fat: 1.5 },
+                    dinner: { protein: 1.5, carb: 0, vegetable: 2, fat: 1.5 }
+                },
+                userData: { goal: defaultGoal, height: defaultHeight, weight: defaultWeight },
+                calculatedAt: new Date().toISOString(),
+                isDefault: true
+            };
+        }
     },
     
     /**

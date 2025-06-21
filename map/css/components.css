@@ -105,7 +105,7 @@
 /* 单选按钮组 */
 .radio-group {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: var(--spacing-md);
 }
 
@@ -144,6 +144,14 @@
     border-color: var(--primary-color);
     color: var(--text-white);
     box-shadow: var(--shadow-md);
+}
+
+.radio-sub {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--text-hint);
+    margin-top: var(--spacing-xs);
+    font-weight: var(--font-weight-normal);
 }
 
 /* 输入框组 */
@@ -192,58 +200,79 @@
     pointer-events: none;
 }
 
-/* 份量展示卡片 */
-.portions-grid {
+/* 分餐展示卡片 */
+.meal-plan-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-3xl);
 }
 
-.portion-card {
+.meal-card {
     background-color: var(--bg-card);
     border-radius: var(--radius-xl);
     padding: var(--spacing-xl);
-    text-align: center;
     box-shadow: var(--shadow-sm);
     transition: all var(--duration-fast) var(--ease-in-out);
 }
 
-.portion-card:hover {
+.meal-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
-.portion-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-md);
-    display: block;
-}
-
-.portion-info h3 {
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-secondary);
-    margin-bottom: var(--spacing-sm);
-}
-
-.portion-amount {
+.meal-header {
     display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: var(--spacing-xs);
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-md);
 }
 
-.portion-amount span:first-child {
-    font-size: var(--font-size-4xl);
+.meal-icon {
+    font-size: 1.5rem;
+}
+
+.meal-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.meal-portions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.portion-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.portion-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+    width: 2rem;
+    text-align: center;
+}
+
+.portion-text {
+    font-size: var(--font-size-md);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-medium);
+}
+
+.portion-text span {
     font-weight: var(--font-weight-bold);
     color: var(--primary-color);
 }
 
-.portion-unit {
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-medium);
-    color: var(--text-secondary);
+.portion-note {
+    font-size: var(--font-size-sm);
+    color: var(--text-hint);
+    font-weight: var(--font-weight-normal);
 }
 
 /* 指南项目 */

@@ -22,9 +22,9 @@
         font-size: var(--font-size-xl);
     }
     
-    /* 单选按钮组 - 改为4列布局 */
+    /* 单选按钮组 - 改为3列布局适配新选项 */
     .radio-group {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: var(--spacing-lg);
     }
     
@@ -45,25 +45,23 @@
         font-size: var(--font-size-xl);
     }
     
-    /* 份量展示网格 - 改为4列布局 */
-    .portions-grid {
-        grid-template-columns: repeat(4, 1fr);
+    /* 分餐展示网格 - 平板适配 */
+    .meal-plan-grid {
         gap: var(--spacing-xl);
         max-width: 800px;
         margin: 0 auto var(--spacing-3xl);
     }
     
-    .portion-card {
+    .meal-card {
         padding: var(--spacing-2xl);
     }
     
-    .portion-icon {
-        font-size: 4rem;
-        margin-bottom: var(--spacing-lg);
+    .meal-icon {
+        font-size: 1.75rem;
     }
     
-    .portion-info h3 {
-        font-size: var(--font-size-lg);
+    .meal-title {
+        font-size: var(--font-size-xl);
     }
     
     /* 指南页面 */
@@ -120,23 +118,22 @@
         margin-bottom: var(--spacing-4xl);
     }
     
-    /* 份量展示 */
-    .portions-grid {
+    /* 分餐展示 */
+    .meal-plan-grid {
         max-width: 1000px;
         gap: var(--spacing-2xl);
     }
     
-    .portion-card {
+    .meal-card {
         padding: var(--spacing-3xl);
     }
     
-    .portion-icon {
-        font-size: 5rem;
-        margin-bottom: var(--spacing-xl);
+    .meal-icon {
+        font-size: 2rem;
     }
     
-    .portion-info h3 {
-        font-size: var(--font-size-xl);
+    .meal-title {
+        font-size: var(--font-size-2xl);
     }
     
     /* 指南页面 */

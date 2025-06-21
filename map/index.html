@@ -23,8 +23,8 @@
     <div id="setup-page" class="page">
         <div class="container">
             <header class="setup-header">
-                <h1 class="setup-title">开启你的健康饮食之旅 🚀</h1>
-                <p class="setup-subtitle">只需几步，为你定制专属膳食计划</p>
+                <h1 class="setup-title">一拳搞定营养餐 👊</h1>
+                <p class="setup-subtitle">还在算热量？太麻烦了！伸出你的手，轻松规划每一餐。</p>
             </header>
 
             <main class="setup-main">
@@ -34,20 +34,17 @@
                         <label class="form-label">你的主要目标是？</label>
                         <div class="radio-group">
                             <label class="radio-item">
-                                <input type="radio" name="goal" value="减脂" required>
-                                <span class="radio-custom">🔥 减脂</span>
+                                <input type="radio" name="goal" value="减脂塑形" required>
+                                <span class="radio-custom">🔥 减脂塑形</span>
                             </label>
                             <label class="radio-item">
-                                <input type="radio" name="goal" value="保持健康" required>
-                                <span class="radio-custom">💚 保持健康</span>
+                                <input type="radio" name="goal" value="均衡营养" required>
+                                <span class="radio-custom">💚 均衡营养</span>
+                                <span class="radio-sub">为身体和大脑提供每日活力</span>
                             </label>
                             <label class="radio-item">
-                                <input type="radio" name="goal" value="增肌" required>
-                                <span class="radio-custom">💪 增肌</span>
-                            </label>
-                            <label class="radio-item">
-                                <input type="radio" name="goal" value="脑力提升" required>
-                                <span class="radio-custom">🧠 脑力提升</span>
+                                <input type="radio" name="goal" value="增肌增重" required>
+                                <span class="radio-custom">💪 增肌增重</span>
                             </label>
                         </div>
                     </section>
@@ -91,50 +88,70 @@
 
             <!-- 主要内容 -->
             <main class="dashboard-main">
-                <h2 class="dashboard-title">今日饮食规划</h2>
-                
-                <!-- 份量展示卡片 -->
-                <div class="portions-grid">
-                    <div class="portion-card">
-                        <div class="portion-icon">✋</div>
-                        <div class="portion-info">
-                            <h3>蛋白质</h3>
-                            <div class="portion-amount">
-                                <span id="protein-amount">4</span>
-                                <span class="portion-unit">掌</span>
+                <!-- 分餐展示卡片 -->
+                <div class="meal-plan-grid">
+                    <!-- 早餐卡片 -->
+                    <div class="meal-card">
+                        <div class="meal-header">
+                            <span class="meal-icon">☀️</span>
+                            <h3 class="meal-title">早餐推荐</h3>
+                        </div>
+                        <div class="meal-portions">
+                            <div class="portion-item">
+                                <span class="portion-icon">✋</span>
+                                <span class="portion-text">蛋白质: <span id="breakfast-protein">1.5</span> 份</span>
+                            </div>
+                            <div class="portion-item">
+                                <span class="portion-icon">✊</span>
+                                <span class="portion-text">碳水: <span id="breakfast-carb">1.5</span> 份</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="portion-card">
-                        <div class="portion-icon">✊</div>
-                        <div class="portion-info">
-                            <h3>碳水化合物</h3>
-                            <div class="portion-amount">
-                                <span id="carb-amount">3</span>
-                                <span class="portion-unit">拳</span>
+
+                    <!-- 午餐卡片 -->
+                    <div class="meal-card">
+                        <div class="meal-header">
+                            <span class="meal-icon">🕛</span>
+                            <h3 class="meal-title">午餐推荐</h3>
+                        </div>
+                        <div class="meal-portions">
+                            <div class="portion-item">
+                                <span class="portion-icon">✋</span>
+                                <span class="portion-text">蛋白质: <span id="lunch-protein">2</span> 份</span>
+                            </div>
+                            <div class="portion-item">
+                                <span class="portion-icon">✊</span>
+                                <span class="portion-text">碳水: <span id="lunch-carb">2</span> 份</span>
+                            </div>
+                            <div class="portion-item">
+                                <span class="portion-icon">🤲</span>
+                                <span class="portion-text">蔬菜: <span id="lunch-vegetable">2</span> 份 <span class="portion-note">(推荐)</span></span>
+                            </div>
+                            <div class="portion-item">
+                                <span class="portion-icon">👍</span>
+                                <span class="portion-text">脂肪: <span id="lunch-fat">1</span> 份</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="portion-card">
-                        <div class="portion-icon">🤲</div>
-                        <div class="portion-info">
-                            <h3>蔬菜</h3>
-                            <div class="portion-amount">
-                                <span id="vegetable-amount">5</span>
-                                <span class="portion-unit">捧</span>
-                            </div>
+
+                    <!-- 晚餐卡片 -->
+                    <div class="meal-card">
+                        <div class="meal-header">
+                            <span class="meal-icon">🌙</span>
+                            <h3 class="meal-title">晚餐推荐</h3>
                         </div>
-                    </div>
-                    
-                    <div class="portion-card">
-                        <div class="portion-icon">👍</div>
-                        <div class="portion-info">
-                            <h3>脂肪</h3>
-                            <div class="portion-amount">
-                                <span id="fat-amount">2</span>
-                                <span class="portion-unit">拇指</span>
+                        <div class="meal-portions">
+                            <div class="portion-item">
+                                <span class="portion-icon">✋</span>
+                                <span class="portion-text">蛋白质: <span id="dinner-protein">1.5</span> 份</span>
+                            </div>
+                            <div class="portion-item">
+                                <span class="portion-icon">🤲</span>
+                                <span class="portion-text">蔬菜: <span id="dinner-vegetable">2</span> 份 <span class="portion-note">(推荐)</span></span>
+                            </div>
+                            <div class="portion-item">
+                                <span class="portion-icon">👍</span>
+                                <span class="portion-text">脂肪: <span id="dinner-fat">1</span> 份</span>
                             </div>
                         </div>
                     </div>
