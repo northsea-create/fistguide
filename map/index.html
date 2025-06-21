@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="一拳膳食 - 用手就能估算饮食份量的健康膳食规划器">
+    <title>一拳膳食 - 健康饮食规划器</title>
+    
+    <!-- CSS文件 -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- 加载动画 -->
+    <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- 设置页面 -->
+    <div id="setup-page" class="page">
+        <div class="container">
+            <header class="setup-header">
+                <h1 class="setup-title">开启你的健康饮食之旅 🚀</h1>
+                <p class="setup-subtitle">只需几步，为你定制专属膳食计划</p>
+            </header>
+
+            <main class="setup-main">
+                <form id="setup-form" class="setup-form">
+                    <!-- 目标选择 -->
+                    <section class="form-section">
+                        <label class="form-label">你的主要目标是？</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="goal" value="减脂" required>
+                                <span class="radio-custom">🔥 减脂</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="goal" value="保持健康" required>
+                                <span class="radio-custom">💚 保持健康</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="goal" value="增肌" required>
+                                <span class="radio-custom">💪 增肌</span>
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="goal" value="脑力提升" required>
+                                <span class="radio-custom">🧠 脑力提升</span>
+                            </label>
+                        </div>
+                    </section>
+
+                    <!-- 身高体重输入 -->
+                    <section class="form-section">
+                        <label class="form-label">你的基本信息？</label>
+                        <div class="input-group">
+                            <div class="input-item">
+                                <label for="height">身高</label>
+                                <input type="number" id="height" name="height" min="100" max="250" placeholder="175" required>
+                                <span class="input-unit">cm</span>
+                            </div>
+                            <div class="input-item">
+                                <label for="weight">体重</label>
+                                <input type="number" id="weight" name="weight" min="30" max="200" placeholder="70" required>
+                                <span class="input-unit">kg</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 提交按钮 -->
+                    <button type="submit" class="btn btn-primary btn-large">
+                        完成，开始规划
+                    </button>
+                </form>
+            </main>
+        </div>
+    </div>
+
+    <!-- 主页面/仪表板 -->
+    <div id="dashboard-page" class="page hidden">
+        <div class="container">
+            <!-- 导航栏 -->
+            <header class="navbar">
+                <h1 class="navbar-title">一拳膳食</h1>
+                <button id="reset-btn" class="btn btn-secondary btn-small">
+                    重新设置 ⚙️
+                </button>
+            </header>
+
+            <!-- 主要内容 -->
+            <main class="dashboard-main">
+                <h2 class="dashboard-title">今日饮食规划</h2>
+                
+                <!-- 份量展示卡片 -->
+                <div class="portions-grid">
+                    <div class="portion-card">
+                        <div class="portion-icon">✋</div>
+                        <div class="portion-info">
+                            <h3>蛋白质</h3>
+                            <div class="portion-amount">
+                                <span id="protein-amount">4</span>
+                                <span class="portion-unit">掌</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="portion-card">
+                        <div class="portion-icon">✊</div>
+                        <div class="portion-info">
+                            <h3>碳水化合物</h3>
+                            <div class="portion-amount">
+                                <span id="carb-amount">3</span>
+                                <span class="portion-unit">拳</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="portion-card">
+                        <div class="portion-icon">🤲</div>
+                        <div class="portion-info">
+                            <h3>蔬菜</h3>
+                            <div class="portion-amount">
+                                <span id="vegetable-amount">5</span>
+                                <span class="portion-unit">捧</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="portion-card">
+                        <div class="portion-icon">👍</div>
+                        <div class="portion-info">
+                            <h3>脂肪</h3>
+                            <div class="portion-amount">
+                                <span id="fat-amount">2</span>
+                                <span class="portion-unit">拇指</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 引导按钮 -->
+                <button id="guide-btn" class="btn btn-outline btn-large">
+                    查看如何估算？ 🤔
+                </button>
+            </main>
+        </div>
+    </div>
+
+    <!-- 指南页面 -->
+    <div id="guide-page" class="page hidden">
+        <div class="container">
+            <header class="guide-header">
+                <button id="back-btn" class="btn btn-text">
+                    ← 返回主页
+                </button>
+                <h1 class="guide-title">我们的可视化度量衡</h1>
+            </header>
+
+            <main class="guide-main">
+                <!-- 度量衡说明 -->
+                <div class="guide-items">
+                    <div class="guide-item">
+                        <div class="guide-icon">✋</div>
+                        <div class="guide-content">
+                            <h3>蛋白质 (一掌)</h3>
+                            <p>一份蛋白质的面积与厚度，约等于您的手掌（不含手指）部分。</p>
+                            <div class="guide-examples">
+                                <span class="example">鸡胸肉</span>
+                                <span class="example">鱼肉</span>
+                                <span class="example">豆腐</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-item">
+                        <div class="guide-icon">✊</div>
+                        <div class="guide-content">
+                            <h3>碳水化合物 (一拳)</h3>
+                            <p>一份碳水化合物，约等于您握紧拳头的体积。</p>
+                            <div class="guide-examples">
+                                <span class="example">米饭</span>
+                                <span class="example">面条</span>
+                                <span class="example">土豆</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-item">
+                        <div class="guide-icon">🤲</div>
+                        <div class="guide-content">
+                            <h3>蔬菜 (一捧)</h3>
+                            <p>一份蔬菜，约等于您双手合拢能捧起的量。</p>
+                            <div class="guide-examples">
+                                <span class="example">菠菜</span>
+                                <span class="example">西兰花</span>
+                                <span class="example">胡萝卜</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guide-item">
+                        <div class="guide-icon">👍</div>
+                        <div class="guide-content">
+                            <h3>脂肪 (一拇指)</h3>
+                            <p>一份健康脂肪，约等于您大拇指第一指节的大小。</p>
+                            <div class="guide-examples">
+                                <span class="example">坚果</span>
+                                <span class="example">橄榄油</span>
+                                <span class="example">牛油果</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 重要说明 -->
+                <div class="guide-notes">
+                    <h3>重要说明</h3>
+                    <ul>
+                        <li>本方法适用于估算已烹饪好的食物</li>
+                        <li>这是一个帮助您养成饮食习惯的估算工具，无需追求绝对精确</li>
+                        <li>坚持比精确更重要，祝您用餐愉快！</li>
+                    </ul>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript文件 -->
+    <script src="js/storage.js"></script>
+    <script src="js/calculator.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html> 
