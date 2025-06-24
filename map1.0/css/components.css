@@ -1,0 +1,569 @@
+/* 文件位置：css/components.css */
+
+/* 
+ * ===============================================
+ * 强制布局修正 (Forced Layout Correction)
+ * ===============================================
+*/
+
+/* --- 第一步：将整个设置页面设置为Flexbox容器 --- */
+#setup-page .container {
+    display: flex;
+    flex-direction: column;
+    /* 
+     * 将所有内容顶部对齐。
+     * 这会消除任何由于 justify-content: space-between 等属性造成的垂直间距。
+    */
+    justify-content: flex-start; 
+}
+
+/* --- 第二步：重置 Header 的所有外边距 --- */
+/* 控制元素：设置页面的标题区域（"一拳搞定营养餐"标题和副标题） */
+.setup-header {
+    text-align: center;
+    /* 
+     * 强制清零所有外边距，确保它不会自己产生任何间距。
+     * 缩短间距，让标题区域更紧凑
+    */
+    margin: 0; 
+    padding: 1rem 0 0 0; /* 上16px, 下0px, 左右0 - 修复巨大空格问题 */
+}
+
+/* --- 第三步：重置 Main 区域的上外边距 --- */
+.setup-main {
+    /* 
+     * 强制清零上外边距，让它紧紧地贴着上面的 header。
+     * 如果还需要一点间距，也是由 header 的 padding-bottom 来控制，而不是它自己。
+    */
+    margin-top: 0;
+}
+
+/* --- 第四步：控制表单内部元素的间距 --- */
+/* 控制元素：设置页面表单容器，包含目标选择卡片、基本信息卡片和提交按钮 */
+.setup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* 16px - 缩短卡片间距，让布局更紧凑 */ 
+}
+/* 组件样式 - Shadcn/ui 风格组件 */
+
+/* ========================================== */
+/* Card 组件 - 参考 Shadcn/ui */
+/* 控制元素：所有卡片容器（目标选择卡片、基本信息卡片、分餐卡片） */
+/* ========================================== */
+.card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* 控制元素：卡片头部区域，包含卡片标题（如"你的主要目标是？"） */
+.card-header {
+    padding: 1rem;                       /* 16px 内边距 - 缩短内边距 */
+    border-bottom: 1px solid var(--border);
+}
+
+/* 控制元素：卡片标题文字（如"你的主要目标是？"、"你的基本信息？"） */
+.card-title {
+    font-size: 1.125rem;                 /* 18px */
+    font-weight: var(--font-weight-semibold);
+    color: var(--foreground);
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* 控制元素：卡片描述文字（如果有的话） */
+.card-description {
+    font-size: 0.875rem;                 /* 14px */
+    color: var(--muted-foreground);
+    margin: 0.5rem 0 0 0;                /* 8px 上边距 */
+    line-height: 1.4;
+}
+
+/* 控制元素：卡片内容区域，包含单选按钮组或输入框组 */
+.card-content {
+    padding: 1rem;                       /* 16px 内边距 - 缩短内边距 */
+}
+
+.card-footer {
+    padding: var(--spacing-xl);
+    border-top: 1px solid var(--border);
+    background-color: var(--muted);
+}
+
+/* ========================================== */
+/* 按钮组件 - Shadcn/ui 风格 */
+/* 控制元素：所有按钮的基础样式（提交按钮、重新设置按钮、查看指南按钮等） */
+/* ========================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    position: relative;
+    outline: none;
+}
+
+.btn:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+/* 按钮尺寸变体 */
+/* 控制元素：小尺寸按钮（如导航栏的"重新设置"按钮） */
+.btn-sm {
+    height: 2.25rem;                       /* 36px */
+    padding: 0 var(--spacing-md);
+    font-size: var(--font-size-sm);
+}
+
+/* 控制元素：默认尺寸按钮 */
+.btn-default {
+    height: 2.5rem;                        /* 40px */
+    padding: 0 var(--spacing-lg);
+}
+
+/* 控制元素：大尺寸按钮（如"完成，开始规划"、"查看如何估算？"按钮） */
+.btn-lg {
+    height: 3rem;                        /* 48px 更高的按钮 */
+    padding: 0 2rem;                     /* 32px 左右内边距 */
+    font-size: 1rem;                     /* 16px */
+    font-weight: var(--font-weight-semibold);
+    width: 100%;                         /* 占满宽度 */
+    max-width: 320px;                    /* 限制最大宽度 */
+    margin: 0 auto;                      /* 居中显示 */
+}
+
+/* 按钮颜色变体 - Shadcn/ui 风格 */
+/* 控制元素：主要按钮（如"完成，开始规划"按钮） */
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    border: 1px solid var(--primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+}
+
+/* 控制元素：次要按钮（如"重新设置"按钮） */
+.btn-secondary {
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--accent);
+}
+
+/* 控制元素：轮廓按钮（如"查看如何估算？"按钮） */
+.btn-outline {
+    background-color: transparent;
+    color: var(--foreground);
+    border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+}
+
+/* 控制元素：文本按钮（如"← 返回主页"按钮） */
+.btn-text {
+    background-color: transparent;
+    color: var(--muted-foreground);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+}
+
+.btn-text:hover {
+    color: var(--foreground);
+    background-color: var(--accent);
+}
+
+
+
+/* 表单组件 - Shadcn/ui 风格 */
+.form-section {
+    /* 移除margin，改为在form-group中统一控制间距 */
+}
+
+.form-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--foreground);
+    margin-bottom: var(--spacing-sm);
+    display: block;
+}
+
+/* css/components.css */
+
+/* ========================================== */
+/* 单选按钮组组件 */
+/* 控制元素：目标选择区域的三个选项（减脂塑形、均衡营养、增肌增重） */
+/* ========================================== */
+.radio-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 三列等宽布局 */
+    gap: 0.1rem;                              /* 16px 间距 */
+    width: 100%;
+}
+
+/* 控制元素：单个目标选项容器（减脂塑形、均衡营养、增肌增重各自的容器） */
+.radio-item {
+    display: block; 
+    cursor: pointer;
+    width: 100%;                          /* 每个选项占满宽度 */
+}
+
+.radio-item input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 控制元素：单选按钮的可视化卡片（包含emoji和文字的卡片样式） */
+.radio-custom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;                 /* 居中对齐 */
+    justify-content: center;             /* 垂直居中 */
+    padding: 1rem;                       /* 16px 内边距 */
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    font-size: 1rem;                     /* 16px */
+    font-weight: var(--font-weight-medium);
+    color: var(--foreground);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    width: 100%;
+    min-height: 4rem;                    /* 64px 最小高度 */
+    text-align: center;                  /* 文字居中 */
+}
+
+.radio-custom:hover {
+    border-color: var(--ring);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.radio-item input[type="radio"]:checked + .radio-custom {
+    background-color: var(--primary);      /* 选中时绿色背景 */
+    border-color: var(--primary);
+    color: var(--primary-foreground);      /* 白色文字 */
+    box-shadow: 0 0 0 2px var(--ring);
+    transform: translateY(-2px);           /* 轻微上移效果 */
+}
+
+/* 控制元素：单选按钮的副标题文字（如"为身体和大脑提供每日活力"） */
+.radio-sub {
+    display: block;
+    font-size: 0.875rem;                 /* 14px */
+    color: var(--muted-foreground);
+    margin-top: 0.25rem;                 /* 4px 上边距 */
+    font-weight: var(--font-weight-normal);
+    line-height: 1.4;
+}
+
+/* ========================================== */
+/* Input 组件 - 完美居中和间距控制 */
+/* 控制元素：基本信息输入区域，包含身高和体重两个输入框 */
+/* ========================================== */
+.input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;                           /* 16px 两个输入框间距 */
+    width: 100%;
+}
+
+/* 控制元素：单个输入框容器（身高输入框或体重输入框的容器） */
+.input-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 控制元素：输入框标签（"身高"和"体重"文字） */
+.input-item label {
+    font-size: 0.875rem;                 /* 14px */
+    font-weight: var(--font-weight-medium);
+    color: var(--foreground);
+    margin-bottom: 0.5rem;               /* 8px 标签与输入框间距 */
+}
+
+/* 控制元素：实际的输入框（用户输入身高和体重数字的地方） */
+.input-item input {
+    height: 2.75rem;                     /* 44px 更高的输入框 */
+    width: 100%;
+    padding: 0 0.75rem;                  /* 12px 左右内边距 */
+    padding-right: 2.5rem;               /* 40px 右内边距为单位预留空间 */
+    font-size: 1rem;                     /* 16px */
+    color: var(--foreground);
+    background-color: var(--background);
+    border: 1px solid var(--input);
+    border-radius: var(--radius-md);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.input-item input:focus {
+    border-color: var(--ring);
+    box-shadow: 0 0 0 2px var(--ring);
+    outline: none;
+}
+
+.input-item input::placeholder {
+    color: var(--muted-foreground);
+}
+
+/* 控制元素：输入框单位标识（"cm"和"kg"文字） */
+.input-unit {
+    position: absolute;
+    right: 0.75rem;                      /* 12px 右边距 */
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.875rem;                 /* 14px */
+    color: var(--muted-foreground);
+    pointer-events: none;
+    font-weight: var(--font-weight-medium);
+}
+
+/* ========================================== */
+/* 分餐展示卡片 - 完美居中和间距控制 */
+/* 控制元素：仪表板页面的三餐卡片容器（早餐、午餐、晚餐卡片的外层容器） */
+/* ========================================== */
+.meal-plan-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;                           /* 卡片间距16px - 缩短间距 */
+    width: 100%;
+    max-width: 480px;                    /* 限制最大宽度 */
+    margin-bottom: 1.5rem;               /* 与按钮间距24px - 缩短间距 */
+}
+
+/* 控制元素：单个分餐卡片（早餐卡片、午餐卡片或晚餐卡片） */
+.meal-card {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.meal-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* 控制元素：分餐卡片头部（包含emoji和餐时名称，如"☀️ 早餐推荐"） */
+.meal-header {
+    padding: 1rem;                       /* 16px 内边距 - 缩短内边距 */
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;                        /* 12px 图标与标题间距 */
+}
+
+.meal-icon {
+    font-size: 1.5rem;                   /* 24px 更大的图标 */
+}
+
+.meal-title {
+    font-size: 1.25rem;                  /* 20px */
+    font-weight: var(--font-weight-semibold);
+    color: var(--foreground);
+    margin: 0;
+    line-height: 1.3;
+}
+
+/* 控制元素：分餐卡片内容区域（包含各种营养素份量信息） */
+.meal-portions {
+    padding: 1rem;                       /* 16px 内边距 - 缩短内边距 */
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;                        /* 12px 份量项间距 - 缩短间距 */
+}
+
+.portion-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;                        /* 12px 图标与文字间距 */
+    padding: 0.5rem 0;                   /* 8px 上下内边距 */
+}
+
+.portion-icon {
+    font-size: 1.25rem;                  /* 20px */
+    flex-shrink: 0;
+    width: 2rem;                         /* 32px 固定宽度对齐 */
+    text-align: center;
+}
+
+.portion-text {
+    font-size: 1rem;                     /* 16px */
+    color: var(--foreground);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.4;
+    flex: 1;                             /* 占满剩余空间 */
+}
+
+.portion-text span {
+    font-weight: var(--font-weight-semibold);
+    color: var(--primary);
+}
+
+.portion-note {
+    font-size: var(--font-size-xs);
+    color: var(--muted-foreground);
+    font-weight: var(--font-weight-normal);
+    margin-left: var(--spacing-xs);
+}
+
+/* 指南项目 */
+.guide-items {
+    margin-bottom: var(--spacing-3xl);
+}
+
+.guide-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-xl);
+    background-color: var(--bg-card);
+    border-radius: var(--radius-xl);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.guide-item:last-child {
+    margin-bottom: 0;
+}
+
+.guide-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.guide-content h3 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+.guide-content p {
+    margin-bottom: var(--spacing-md);
+    line-height: var(--line-height-loose);
+}
+
+.guide-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.example {
+    background-color: var(--primary-light);
+    color: var(--text-white);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+/* 指南说明 */
+.guide-notes {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-xl);
+    border-left: 4px solid var(--warning-color);
+}
+
+.guide-notes h3 {
+    margin-bottom: var(--spacing-md);
+    color: var(--warning-color);
+}
+
+.guide-notes ul {
+    list-style: none;
+}
+
+.guide-notes li {
+    position: relative;
+    padding-left: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-secondary);
+    line-height: var(--line-height-loose);
+}
+
+.guide-notes li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--warning-color);
+    font-weight: var(--font-weight-bold);
+}
+
+.guide-notes li:last-child {
+    margin-bottom: 0;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-up {
+    animation: slideUp var(--duration-normal) var(--ease-out);
+}
+
+/* 状态样式 */
+.success {
+    color: var(--success-color);
+}
+
+.warning {
+    color: var(--warning-color);
+}
+
+.error {
+    color: var(--error-color);
+}
+
+.info {
+    color: var(--info-color);
+} 

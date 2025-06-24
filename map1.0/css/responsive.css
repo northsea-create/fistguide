@@ -3,6 +3,20 @@
 /* 默认样式：移动端 (< 768px) */
 /* 已在其他CSS文件中定义 */
 
+/* 移动端单选按钮组：单列布局 */
+@media (max-width: 767px) {
+    .radio-group {
+        grid-template-columns: 1fr; /* 移动端单列布局 */
+        gap: 0.75rem;               /* 12px 间距 */
+        max-width: 100%;
+    }
+    
+    .radio-custom {
+        min-height: 3.5rem;         /* 56px 移动端高度 */
+        padding: 0.75rem;           /* 12px 内边距 */
+    }
+}
+
 /* 平板设备 (768px - 1023px) */
 @media (min-width: 768px) {
     .container {
@@ -11,7 +25,7 @@
     
     /* 设置页面 */
     .setup-header {
-        padding: var(--spacing-4xl) 0;
+        padding: var(--spacing-md) 0 0 0; /* 16px 上边距，消除巨大空格 */
     }
     
     .setup-title {
@@ -22,10 +36,12 @@
         font-size: var(--font-size-xl);
     }
     
-    /* 单选按钮组 - 改为3列布局适配新选项 */
+    /* 单选按钮组 - 根据PRD v1.1设计指南优化布局 */
     .radio-group {
         grid-template-columns: repeat(3, 1fr);
-        gap: var(--spacing-lg);
+        gap: var(--spacing-xl);
+        max-width: 48rem;                  /* 限制最大宽度，保持中轴线对齐 */
+        margin: 0 auto;                    /* 居中显示 */
     }
     
     .radio-custom {
@@ -96,7 +112,7 @@
     
     /* 设置页面 */
     .setup-header {
-        padding: var(--spacing-4xl) 0 var(--spacing-3xl);
+        padding: var(--spacing-md) 0 0 0; /* 16px 上边距，消除巨大空格 */
     }
     
     .setup-form {
@@ -192,7 +208,7 @@
 /* 横屏手机适配 */
 @media (max-height: 500px) and (orientation: landscape) {
     .setup-header {
-        padding: var(--spacing-lg) 0;
+        padding: var(--spacing-md) 0 0 0; /* 16px 上边距，消除巨大空格 */
     }
     
     .setup-title {

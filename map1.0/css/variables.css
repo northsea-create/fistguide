@@ -1,41 +1,40 @@
 /* CSS变量 - 设计系统核心变量 */
 
 :root {
-    /* 颜色主题 */
-    --primary-color: #4CAF50;
-    --primary-light: #81C784;
-    --primary-dark: #388E3C;
+    /* 颜色主题 - Shadcn/ui 风格配色 */
+    --primary: #22c55e;              /* 活力绿 - 更沉稳的绿色 */
+    --primary-foreground: #ffffff;   /* 主色调前景 */
+    --primary-hover: #16a34a;        /* 主色调悬停 */
     
-    --secondary-color: #FFC107;
-    --secondary-light: #FFD54F;
-    --secondary-dark: #F57C00;
+    --secondary: #f1f5f9;            /* 辅助色 */
+    --secondary-foreground: #0f172a; /* 辅助色前景 */
     
-    --accent-color: #2196F3;
-    --accent-light: #64B5F6;
-    --accent-dark: #1976D2;
+    --muted: #f8fafc;                /* 静音色 */
+    --muted-foreground: #64748b;     /* 静音色前景 */
     
-    /* 文字颜色 */
-    --text-primary: #212121;
-    --text-secondary: #757575;
-    --text-hint: #9E9E9E;
-    --text-white: #FFFFFF;
+    --accent: #f1f5f9;               /* 强调色 */
+    --accent-foreground: #0f172a;    /* 强调色前景 */
     
-    /* 背景颜色 */
-    --bg-primary: #FAFAFA;
-    --bg-secondary: #FFFFFF;
-    --bg-card: #FFFFFF;
-    --bg-overlay: rgba(0, 0, 0, 0.5);
+    /* 文字颜色 - Shadcn/ui 风格 */
+    --foreground: #020617;           /* 主要文字 */
+    --muted-foreground: #64748b;     /* 次要文字 */
     
-    /* 状态颜色 */
-    --success-color: #4CAF50;
-    --warning-color: #FF9800;
-    --error-color: #F44336;
-    --info-color: #2196F3;
+    /* 背景颜色 - Shadcn/ui 风格 */
+    --background: #ffffff;           /* 主背景 */
+    --card: #ffffff;                 /* 卡片背景 */
+    --popover: #ffffff;              /* 弹出层背景 */
     
     /* 边框颜色 */
-    --border-light: #E0E0E0;
-    --border-medium: #BDBDBD;
-    --border-dark: #9E9E9E;
+    --border: #e2e8f0;               /* 边框色 */
+    --input: #e2e8f0;                /* 输入框边框 */
+    --ring: #22c55e;                 /* 焦点环颜色 */
+    
+    /* 状态颜色 */
+    --destructive: #ef4444;           /* 危险色 */
+    --destructive-foreground: #ffffff; /* 危险色前景 */
+    --warning: #f59e0b;               /* 警告色 */
+    --success: #22c55e;               /* 成功色 */
+    --info: #3b82f6;                  /* 信息色 */
     
     /* 阴影 */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);

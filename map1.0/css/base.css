@@ -1,0 +1,270 @@
+/* 基础样式 - 全局布局和通用样式 */
+
+/* 导入Google Fonts - Shadcn/ui 风格字体 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-normal);
+    overflow-x: hidden;
+}
+
+/* 容器布局 - Shadcn/ui 风格，解决对齐问题 */
+/* css/base.css */
+
+.container {
+    width: 100%;                  /* 确保在小屏幕上宽度是100% */
+    max-width: 640px;             /* 这是关键！在桌面端，内容区域最大宽度为640px */
+    margin-left: auto;            /* 这是关键！自动计算左外边距 */
+    margin-right: auto;           /* 这是关键！自动计算右外边距 */
+    padding-left: 1rem;           /* 16px的内边距，防止内容在手机上贴边 */
+    padding-right: 1rem;          /* 16px的内边距 */
+}
+
+/* 页面布局 - Shadcn/ui 风格 */
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--muted);      /* 柔和灰度背景 */
+}
+
+.page.hidden {
+    display: none;
+}
+
+/* 标题样式 - Shadcn/ui 风格 */
+h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--foreground);
+    letter-spacing: -0.025em;            /* 轻微字间距调整 */
+}
+
+h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--foreground);
+    letter-spacing: -0.025em;
+}
+
+h3 {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-medium);
+    color: var(--foreground);
+}
+
+/* 文本样式 - Shadcn/ui 风格 */
+p {
+    color: var(--muted-foreground);
+    line-height: var(--line-height-normal);
+}
+
+/* 加载动画 */
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-modal);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--border-light);
+    border-top: 4px solid var(--primary-color);
+    border-radius: var(--radius-full);
+    animation: spin var(--duration-slow) linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ========================================== */
+/* 设置页面样式 - 完美居中和间距控制 */
+/* 控制元素：设置页面头部区域（标题和副标题的容器） */
+/* ========================================== */
+.setup-header {
+    text-align: center;
+    padding: 1rem 0 0 0;              /* 上16px 下0px - 消除巨大空格 */
+    margin-bottom: 0;                 /* 与表单间距0px */
+}
+
+/* 控制元素：设置页面主标题（"一拳搞定营养餐 👊"） */
+.setup-title {
+    margin-bottom: 0.75rem;              /* 标题与副标题间距12px - 缩短间距 */
+    color: var(--foreground);
+    font-weight: var(--font-weight-bold);
+    font-size: 1.75rem;                  /* 28px - 缩小字体 */
+    line-height: 1.2;
+}
+
+/* 控制元素：设置页面副标题（"还在算热量？太麻烦了！..."） */
+.setup-subtitle {
+    font-size: 1rem;                     /* 16px - 缩小字体 */
+    color: var(--muted-foreground);
+    max-width: 28rem;                    /* 限制宽度448px */
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* 控制元素：设置页面主要内容区域（包含表单的容器） */
+.setup-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;             /* 水平居中 */
+    align-items: flex-start;             /* 顶部对齐 */
+    padding-bottom: 2rem;                /* 底部间距32px - 缩短间距 */
+}
+
+/* 控制元素：设置页面表单容器（包含所有卡片和按钮的直接容器） */
+.setup-form {
+    width: 100%;
+    max-width: 480px;                    /* 表单最大宽度限制 */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;                           /* 卡片间距16px - 缩短间距 */
+}
+
+/* 导航栏样式 - Shadcn/ui 风格 */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--background);
+}
+
+.navbar-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--foreground);
+}
+
+/* ========================================== */
+/* 仪表板样式 - 完美居中和间距控制 */
+/* 控制元素：仪表板页面主要内容区域（包含分餐卡片和按钮的容器） */
+/* ========================================== */
+.dashboard-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;                 /* 水平居中所有内容 */
+    padding: 1.5rem 0 2rem 0;            /* 上24px 下32px - 缩短间距 */
+    width: 100%;
+}
+
+/* 控制元素：仪表板页面标题（如果有的话） */
+.dashboard-title {
+    text-align: center;
+    margin-bottom: 1.5rem;               /* 与卡片组间距24px - 缩短间距 */
+    color: var(--foreground);
+}
+
+/* 指南页面样式 - Shadcn/ui 风格 */
+.guide-header {
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.guide-title {
+    text-align: center;
+    margin-top: var(--spacing-md);
+    color: var(--foreground);
+}
+
+.guide-main {
+    flex: 1;
+    padding: var(--spacing-2xl) 0;
+}
+
+/* 工具类 */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mb-sm {
+    margin-bottom: var(--spacing-sm);
+}
+
+.mb-md {
+    margin-bottom: var(--spacing-md);
+}
+
+.mb-lg {
+    margin-bottom: var(--spacing-lg);
+}
+
+.mt-sm {
+    margin-top: var(--spacing-sm);
+}
+
+.mt-md {
+    margin-top: var(--spacing-md);
+}
+
+.mt-lg {
+    margin-top: var(--spacing-lg);
+}
+
+.p-sm {
+    padding: var(--spacing-sm);
+}
+
+.p-md {
+    padding: var(--spacing-md);
+}
+
+.p-lg {
+    padding: var(--spacing-lg);
+}
+
+/* 焦点样式 - Shadcn/ui 风格 */
+:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+}
+
+/* 选择文本样式 - Shadcn/ui 风格 */
+::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+}
+
+/* 滚动条样式 - Shadcn/ui 风格 */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--muted);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--muted-foreground);
+} 
